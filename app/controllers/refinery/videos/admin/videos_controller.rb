@@ -10,6 +10,7 @@ module Refinery
                 :sortable => true
 
         before_filter :set_embedded, :only => [:new, :create]
+        before_filter :default_new_video_url, :only => [:index]
 
         def show
           @video = Video.find(params[:id])
@@ -51,6 +52,11 @@ module Refinery
 
         def set_embedded
           @embedded = true if params['embedded']
+        end
+
+        def default_new_video_url
+          @url = Refinery::Videos.use_type[:use_file] == true ? 
+            refinery.new_videos_admin_video_path : refinery.new_videos_admin_video_path(:embedded => true)
         end
 
       end
